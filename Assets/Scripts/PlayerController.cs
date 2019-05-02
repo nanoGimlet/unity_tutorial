@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour
     public float speed; // 動く速さ
     public Text scoreText; // スコアの UI
     public Text winText; // リザルトの UI
+    public Text getText; // ゲット
+
+    public GameObject target;
 
     private Rigidbody rb; // Rididbody
     private int score; // スコア
@@ -19,6 +22,7 @@ public class PlayerController : MonoBehaviour
         score = 0;
         SetCountText();
         winText.text = "";
+        getText.text = "";
     }
 
     void Update()
@@ -32,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
         // Ridigbody に力を与えて玉を動かす
         rb.AddForce(movement * speed);
+
     }
 
     // 玉が他のオブジェクトにぶつかった時に呼び出される
@@ -43,8 +48,15 @@ public class PlayerController : MonoBehaviour
             // その収集アイテムを非表示にします
             other.gameObject.SetActive(false);
 
+            target = other.gameObject;
+
+            Invoke("Generate", 0.5f);
+
             // スコアを加算します
             score = score + 1;
+            getText.text = "Get";
+
+            Invoke("Get", 0.2f);
 
             // UI の表示を更新します
             SetCountText();
@@ -63,5 +75,15 @@ public class PlayerController : MonoBehaviour
             // リザルトの表示を更新
             winText.text = "You Win!";
         }
+    }
+
+    void Get()
+    {
+        getText.text = "";
+    }
+    
+    void Generate()
+    {
+        target.SetActive(true);
     }
 }
