@@ -2,7 +2,7 @@
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 20; // 動く速さ
+    public float speed; // 動く速さ
 
     private Rigidbody rb; // Rididbody
 
@@ -23,5 +23,16 @@ public class PlayerController : MonoBehaviour
 
         // Ridigbody に力を与えて玉を動かす
         rb.AddForce(movement * speed);
+    }
+
+    // 玉が他のオブジェクトにぶつかった時に呼び出される
+    void OnTriggerEnter(Collider other)
+    {
+        // ぶつかったオブジェクトが収集アイテムだった場合
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            // その収集アイテムを非表示にします
+            other.gameObject.SetActive(false);
+        }
     }
 }
